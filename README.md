@@ -2,7 +2,7 @@
 SQLiten käyttö Unityn kanssa.
 
 Kopioi Assets/Plugins/ kansiosta löytyvät kaksi .DLL tiedostoa oman projektisi vastaavaan kansioon.
-Kopioi DataManager.cs tiedosto omaan projektiisi Assets kansioon
+Kopioi DatabaseManager.cs tiedosto omaan projektiisi Assets kansioon
 
 **Luo uusi taulukko:**
 
