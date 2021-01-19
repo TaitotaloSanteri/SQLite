@@ -19,8 +19,9 @@ Kopioi DataManager.cs tiedosto omaan projektiisi Assets kansioon
 
 Korvaa **OmaLuokka** sana yllä olevissa esimerkeissä omalla luokallasi, esim:
 
-```DataManager.CreateTable<HighScore>();
+`DataManager.CreateTable<HighScore>();`
 
+```
 public class HighScore{
   public string name; 
   public int score; 
