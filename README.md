@@ -19,13 +19,12 @@ DataManager.ReadAllDataFromTable<OmaLuokka>();
 
 Korvaa **OmaLuokka** sana yllä olevissa esimerkeissä omalla luokallasi, esim:
 
-
 DataManager.CreateTable<HighScore>();
 
 public class HighScore{
-  public string name;
-  public int score;
-  public string date;
+  public string name; 
+  public int score; 
+  public string date; 
 }
 
 
