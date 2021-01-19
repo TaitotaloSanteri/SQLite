@@ -54,6 +54,28 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
+    public static void CloseDatabase() => dbConnection.Close(); 
+
+    public static void UpdateTable<T>(string setText, string whereText, string name = "")
+    {
+        string tableName = name == "" ? typeof(T).ToString() : name;
+        FieldInfo[] tableFields = typeof(T).GetFields();
+        string cmd = $"UPDATE {tableName} SET {setText} WHERE {whereText}";
+        ExecuteCommand(cmd);
+    }
+    
+    /// <summary>
+    /// Ottaa sisään kokonaisen SQL -komennon 
+    /// </summary>
+    public static void ExecutePureSQL(string cmd) => ExecuteCommand(cmd);
+
+    public static void DropTable<T>(string name = "")
+    {
+        string tableName = name == "" ? typeof(T).ToString() : name;
+        string cmd = $"DROP TABLE {tableName}";
+        ExecuteCommand(cmd);
+    }
+
     public static List<T> ReadAllDataFromTable<T>(string name = "") where T : new()
     {
         string tableName = name == "" ? typeof(T).ToString() : name;
@@ -79,6 +101,7 @@ public class DatabaseManager : MonoBehaviour
                 typeof(T).GetField(tableFields[i].Name).SetValue(data[index], reader.GetValue(i));
             }
         }
+        reader.Close();
         return data;
     }
 
