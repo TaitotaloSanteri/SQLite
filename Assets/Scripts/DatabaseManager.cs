@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Reflection;
@@ -118,16 +119,16 @@ public class DatabaseManager : MonoBehaviour
         string cmd = $"INSERT INTO {tableName} (";
         // Käydään geneerisen tyypin muuttujanimet läpi ja lisätään
         // ne SQL-komentoon.
-        for (int i = 0; i < tableFields.Length; i++)
+        for (int i = 1; i < tableFields.Length; i++)
         {
-            if (i > 0) cmd += ", ";
+            if (i > 1) cmd += ", ";
             cmd += $"{tableFields[i].Name}";
         }
         cmd += ") VALUES (";
 
-        for (int i = 0; i < tableFields.Length; i++)
+        for (int i = 1; i < tableFields.Length; i++)
         {
-            if (i > 0) cmd += ", ";
+            if (i > 1) cmd += ", ";
             // Haetaan reflektioiden avulla arvot data -muuttujasta. Reflektioita
             // joudutaan käyttämään, koska ohjelmamme ei etukäteen tiedä
             // minkätyyppinen objekti on kyseessä (geneerinen tyyppi).
@@ -136,7 +137,14 @@ public class DatabaseManager : MonoBehaviour
         cmd += ")";
         ExecuteCommand(cmd);
     }
-
+    private static bool CheckForId(FieldInfo id)
+    {
+        if (id.Name != "id")
+        {
+            Debug.Log("The first member of the class has to be ID");
+        }
+        return id.Name == "id";
+    }
     // Funktio, joilla luodaan uusia tauluja tietokantaan. Käytetään 
     // geneeristä tyyppiä <T>, jotta voidaan käyttää samaa funktiota
     // monenlaisten taulujen luontiin.
@@ -149,13 +157,16 @@ public class DatabaseManager : MonoBehaviour
         // tyyliset muuttujat. HighScore luokan tapauksessa nämä
         // olisivat name, score, date.
         FieldInfo[] tableFields = typeof(T).GetFields();
+        if (!CheckForId(tableFields[0])) return;
+        
         // Lisätään SQL-komennon alku.
-        string cmd = $"CREATE TABLE IF NOT EXISTS {tableName} (";
+        string cmd = $"CREATE TABLE IF NOT EXISTS {tableName} (ID INTEGER PRIMARY KEY AUTOINCREMENT, ";
         // Käydään for -loopilla läpi kaikki luokkaan kuuluvat muuttujat.
-        for (int i = 0; i < tableFields.Length; i++)
+        for (int i = 1; i < tableFields.Length; i++)
         {
-            if (i > 0) cmd += ", ";
+            if (i > 1) cmd += ", ";
             cmd += $"{tableFields[i].Name} {TypeToSQL[tableFields[i].FieldType]}";
+        
         }
         cmd += ")";
         Debug.Log(cmd);

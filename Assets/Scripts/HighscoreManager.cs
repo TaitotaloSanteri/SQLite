@@ -16,6 +16,7 @@ public class HighscoreManager : MonoBehaviour
 
     private void Start()
     {
+        //DatabaseManager.DropTable<Highscore>();
         DatabaseManager.CreateTable<Highscore>();
         DatabaseManager.ExecutePureSQL("UPDATE Highscore SET name = 'Juan' WHERE name = 'Mikko'");
     }
@@ -69,6 +70,7 @@ public class HighscoreManager : MonoBehaviour
 
 public class Highscore
 {
+    public Int64 id;
     public string name;
     public int score;
     public string date;
